@@ -19,3 +19,10 @@ class MailGun(Email):
                   "to": to_field,
                   "subject": subject_field,
                   "text": strip_tags(body_text)})
+
+    def evaluate_timeout(self, response):
+        if response.status_code != requests.codes.ok:
+            self.timeout = True
+        else:
+            self.timeout = False
+

@@ -23,3 +23,10 @@ class Mandrill(Email):
             }
         }
         return requests.post(self.server, data=json.dumps(payload))
+
+    def evaluate_timeout(self, response):
+        j = response.json()
+        if 'status' in j and j['status'] == 'error':
+            self.timeout = True
+        else:
+            self.timeout = False

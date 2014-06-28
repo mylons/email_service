@@ -1,5 +1,6 @@
 from flask import Flask
 from flask import request
+import requests
 
 from email_strategy.email_factory import EmailFactory
 
@@ -70,8 +71,14 @@ def valid(the_json):
 
 def send_email(the_json):
     # send the email out
-    return email_factory.get_emailer().send_email(the_json['to'], the_json['from'],
-                                                  the_json['subject'], the_json['body'])
+    e = email_factory.get_emailer()
+    r = e.send_email(the_json['to'], the_json['from'],
+                     the_json['subject'], the_json['body'])
+    # this allows the email object to update itself without the service
+    # having to worry about the codes from different providers
+    e.evaluate_timeout(r)
+    return r
+
 
 
 

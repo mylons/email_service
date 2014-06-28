@@ -31,5 +31,8 @@ class Email(object):
             raise TypeError('Expected boolean')
         self._timeout = value
 
+    @abc.abstractmethod
+    def evaluate_timeout(self, response):
+        raise NotImplementedError
 
 

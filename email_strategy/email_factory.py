@@ -12,9 +12,9 @@ class EmailFactory(object):
         self.md = Mandrill()
 
     def get_emailer(self):
-        if not self.md.timeout:
-            return self.md
-        elif not self.mg.timeout:
+        if not self.mg.timeout:
             return self.mg
+        elif not self.md.timeout:
+            return self.md
         else:
             return Email

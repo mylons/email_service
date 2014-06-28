@@ -17,4 +17,7 @@ class EmailFactory(object):
         elif not self.md.timeout:
             return self.md
         else:
+            # TODO
+            # not sure what to do if both are timed out, what's a good way to get
+            # back to a state where one might be up?
             return Email

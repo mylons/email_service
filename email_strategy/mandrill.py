@@ -2,6 +2,7 @@ import requests
 import json
 import os
 from email_strategy.email import Email
+from util.html_tools import strip_tags
 
 
 class Mandrill(Email):
@@ -15,7 +16,7 @@ class Mandrill(Email):
         payload = {
             'key': self.api_key,
             'message': {
-                'text': body_text,
+                'text': strip_tags(body_text),
                 'subject': subject_field,
                 'from_email': from_field,
                 'to': [{'email': to_field}]

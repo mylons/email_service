@@ -1,6 +1,7 @@
 import os
 import requests
 from email_strategy.email import Email
+from util.html_tools import strip_tags
 
 
 class MailGun(Email):
@@ -17,4 +18,4 @@ class MailGun(Email):
             data={"from": from_field,
                   "to": to_field,
                   "subject": subject_field,
-                  "text": body_text})
+                  "text": strip_tags(body_text)})

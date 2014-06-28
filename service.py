@@ -6,6 +6,10 @@ from email_strategy.email_factory import EmailFactory
 from util import validator
 from util.validator import ValidationError
 
+#################
+# initial setup #
+#################
+
 # get a flask instance
 app = Flask(__name__)
 # pre cache some objects/lists
@@ -45,7 +49,7 @@ def process_json():
 
 
 def valid(the_json):
-    #validate -- return true/false
+    # validate json -- return true/false
     # these call functions throw exceptions
     try:
         # validate required json keys are there
@@ -62,6 +66,7 @@ def valid(the_json):
         return False
 
     return True
+
 
 def send_email(the_json):
     # send the email out

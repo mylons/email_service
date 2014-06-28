@@ -3,3 +3,16 @@
 # using Flask to handle routes and a simple web server
 
 # using unittest, and coverage for testing
+
+# environment variables
+The following need to be defined:
+    MAILGUN_SERVER
+    MAILGUN_API_KEY
+    MANDRILL_API_KEY
+    MANDRILL_SERVER
+
+# setup and use
+use virtualenv to setup the environment
+
+run program like so:
+    python service.py

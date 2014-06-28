@@ -18,7 +18,8 @@ class Email(object):
         return cls.self
 
     @abc.abstractmethod
-    def send_email(self, to_field, from_field, subject_field, body_text):
+    #json_keys = ['to', 'to_name', 'from', 'from_name', 'subject', 'body']
+    def send_email(self, to_name, to_field, from_name, from_field, subject_field, body_text):
         raise NotImplementedError
 
     @property

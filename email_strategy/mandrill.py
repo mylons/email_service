@@ -12,7 +12,7 @@ class Mandrill(Email):
         self.api_key = os.getenv('MANDRILL_API_KEY')
         self.server = os.getenv('MANDRILL_SERVER')
 
-    def send_email(self, to_field, from_field, subject_field, body_text):
+    def send_email(self, to_name, to_field, from_name, from_field, subject_field, body_text):
         payload = {
             'key': self.api_key,
             'message': {

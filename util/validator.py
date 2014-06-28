@@ -26,8 +26,10 @@ class StringLength(object):
     """
 
     def __init__(self, the_min=None, the_max=None, message=''):
-        assert the_min is not None or the_max is not None, 'Need a min or a max.'
-        assert the_max is None or the_min <= the_max, 'max cannot be less than min'
+        assert the_min is not None or the_max is not None, \
+            'Need a min or a max.'
+        assert the_max is None or the_min <= the_max, \
+            'max cannot be less than min'
         self.the_min = the_min
         self.the_max = the_max
         self.message = message
@@ -38,13 +40,16 @@ class StringLength(object):
             raise ValidationError("%s must be a string" % field)
         # validate
         l = len(the_string)
-        if (self.the_min and self.the_min > l) or (self.the_max and self.the_max < l):
+        if (self.the_min and self.the_min > l) \
+                or (self.the_max and self.the_max < l):
             message = self.message
             if message is None:
                 if self.the_max is None:
-                    message = "%s must be at least %s characters" % (field, self.the_min)
+                    message = "%s must be at least %s characters" \
+                              % (field, self.the_min)
                 elif self.the_min is None:
-                    message = "%s must be less than %s characters" % (field, self.the_max)
+                    message = "%s must be less than %s characters" \
+                              % (field, self.the_max)
             raise ValidationError(message)
         # string must be valid at this point
 
@@ -92,5 +97,3 @@ class JSON(object):
                     raise ValidationError(message)
         except (KeyError, TypeError) as e:
             raise ValidationError("invalid json string %s" % e)
-
-

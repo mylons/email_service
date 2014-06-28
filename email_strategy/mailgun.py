@@ -25,4 +25,3 @@ class MailGun(Email):
             self.timeout = True
         else:
             self.timeout = False
-

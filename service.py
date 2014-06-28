@@ -39,9 +39,7 @@ def process_json():
     only accepts POST requests
     only operates on JSON data
     """
-    app.logger.debug(request.json)
     if valid(request.json):
-        app.logger.debug("json is valid")
         req = send_email(request.json)
         return req.url, 200
     else:
@@ -78,9 +76,6 @@ def send_email(the_json):
     # having to worry about the codes from different providers
     e.evaluate_timeout(r)
     return r
-
-
-
 
 if __name__ == '__main__':
     app.run(debug=True)

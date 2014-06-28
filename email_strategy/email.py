@@ -34,5 +34,3 @@ class Email(object):
     @abc.abstractmethod
     def evaluate_timeout(self, response):
         raise NotImplementedError
-
-

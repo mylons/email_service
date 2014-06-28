@@ -1,6 +1,8 @@
 from flask import Flask
 from flask import request
 
+from email_strategy.email_factory import EmailFactory
+
 from util import validator
 from util.validator import ValidationError
 
@@ -12,9 +14,12 @@ json_validator = validator.JSON()
 str_validator = validator.StringLength(the_min=2)
 email_validator = validator.Email()
 
+# email factory
+email_factory = EmailFactory()
+
 
 @app.route('/email', methods=['POST'])
-def email():
+def process_json():
     """
     json spec (k: v):
      to: email address in to field
@@ -32,10 +37,11 @@ def email():
     app.logger.debug(request.json)
     if valid(request.json):
         app.logger.debug("json is valid")
-        send_email(request.json)
+        req = send_email(request.json)
+        return req.url, 200
     else:
         app.logger.debug("json not valid")
-    return "lawl"
+        return "<p>return fail</p>", 404
 
 
 def valid(the_json):
@@ -59,6 +65,9 @@ def valid(the_json):
 
 def send_email(the_json):
     # send the email out
+    return email_factory.get_emailer().send_email(the_json['to'], the_json['from'],
+                                                  the_json['subject'], the_json['body'])
+
 
 
 if __name__ == '__main__':

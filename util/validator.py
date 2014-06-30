@@ -25,10 +25,10 @@ class StringLength(object):
         Error message if validation error
     """
 
-    def __init__(self, the_min=None, the_max=None, message=''):
-        assert the_min is not None or the_max is not None, \
+    def __init__(self, the_min=-1, the_max=-1, message=''):
+        assert the_min != -1 or the_max != -1, \
             'Need a min or a max.'
-        assert the_max is None or the_min <= the_max, \
+        assert the_max == -1 or the_min <= the_max, \
             'max cannot be less than min'
         self.the_min = the_min
         self.the_max = the_max
@@ -66,7 +66,7 @@ class Email(object):
         self.regex = re.compile(r'^.+@[^.].*\.[a-z]{2,10}$', re.IGNORECASE)
         self.message = message
 
-    def __call__(self, field, email):
+    def __call__(self, email):
         message = self.message
         if message is None:
             message = "Invalid email address"

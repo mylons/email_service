@@ -58,8 +58,8 @@ def valid(the_json):
             app.logger.debug("validating %s: %s" % (k, the_json[k]))
             str_validator(k, the_json[k])
         # validate email format
-        email_validator('to', the_json['to'])
-        email_validator('from', the_json['from'])
+        email_validator(the_json['to'])
+        email_validator(the_json['from'])
 
     except ValidationError:
         return False

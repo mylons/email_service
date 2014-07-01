@@ -1,21 +1,28 @@
 import abc
 
 
-class Email(object):
+class Singleton(type):
+    def __init__(self, *args, **kwargs):
+        self.__instance = None
+        super().__init__(*args, **kwargs)
+        return self.__instance
+
+    def __call__(self, *args, **kwargs):
+        if self.__instance is None:
+            self.__instance = super().__call__(*args, **kwargs)
+            return self.__instance
+        else:
+            return self.__instance
+
+
+
+class Email(metaclass=Singleton):
     """
     base class for emails
     it is a singleton by design.
     """
-    __metaclass__ = abc.ABCMeta
-
     def __init__(self):
         self._timeout = False
-
-    # enforces singleton for sub classes
-    def __new__(cls, *args, **kwargs):
-        if not hasattr(cls, 'self'):
-            cls.self = object.__new__(cls)
-        return cls.self
 
     @abc.abstractmethod
     #json_keys = ['to', 'to_name', 'from', 'from_name', 'subject', 'body']

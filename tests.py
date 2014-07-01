@@ -9,6 +9,8 @@ from email_strategy.mandrill import  Mandrill
 import service
 
 
+UBER_JSON_STR = '{"to": "fake@example.com", "to_name": "Ms. Fake", "from": "noreply@uber.com", "from_name": "Uber", "subject": "A Message from Uber", "body": "<h1>Your Bill</h1><p>$10</p>"}'
+
 class StringLengthTests(unittest.TestCase):
 
     def setUp(self):
@@ -88,7 +90,7 @@ class ServiceTests(unittest.TestCase):
     def setUp(self):
         service.app.config['TESTING'] = True
         self.app = service.app.test_client()
-        self.uber_json_str = '{"to": "fake@example.com", "to_name": "Ms. Fake", "from": "noreply@uber.com", "from_name": "Uber", "subject": "A Message from Uber", "body": "<h1>Your Bill</h1><p>$10</p>"}'
+        self.uber_json_str = UBER_JSON_STR
         self.uber_json_str_missing_keys = '{"to1": "fake@example.com", "to_name2": "Ms. Fake", "from": "noreply@uber.com", "from_name": "Uber", "subject": "A Message from Uber", "body": "<h1>Your Bill</h1><p>$10</p>"}'
 
     def test_process_json_response_code_200(self):
@@ -145,6 +147,18 @@ class EmailTests(unittest.TestCase):
         self.md_a.timeout = True
         self.assertEqual(self.mg_a.timeout, self.mg_b.timeout)
         self.assertEqual(self.md_a.timeout, self.md_b.timeout)
+
+    def test_send_email(self):
+        import requests
+        the_json = json.loads(UBER_JSON_STR)
+        r = self.mg_a.send_email(the_json['to_name'], the_json['to'], the_json['from_name'],
+                                 the_json['from'], the_json['subject'], the_json['body'])
+        self.assertEqual(r.status_code == requests.codes.ok, True)
+
+        r = self.md_a.send_email(the_json['to_name'], the_json['to'], the_json['from_name'],
+                                 the_json['from'], the_json['subject'], the_json['body'])
+        self.assertEqual(r.status_code == requests.codes.ok, True)
+
 
 if __name__ == '__main__':
     unittest.main()

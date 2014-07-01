@@ -4,4 +4,8 @@ MarkupSafe==0.23
 Werkzeug==0.9.6
 coverage==3.7.1
 itsdangerous==0.24
+pep8==1.5.7
+py==1.4.20
+pytest==2.5.2
 requests==2.3.0
+test-pkg==0.0

@@ -43,8 +43,7 @@ def process_json():
         req = send_email(request.json)
         return req.url, 200
     else:
-        app.logger.debug("json not valid")
-        return "<p>return fail</p>", 404
+        return "<p>return fail</p>", 400
 
 
 def valid(the_json):
@@ -55,7 +54,6 @@ def valid(the_json):
         json_validator(json_keys, the_json)
         # validate those fields have strings with some content
         for k in json_keys:
-            app.logger.debug("validating %s: %s" % (k, the_json[k]))
             str_validator(k, the_json[k])
         # validate email format
         email_validator(the_json['to'])

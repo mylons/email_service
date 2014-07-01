@@ -25,7 +25,7 @@ class StringLength(object):
         Error message if validation error
     """
 
-    def __init__(self, the_min=-1, the_max=-1, message=''):
+    def __init__(self, the_min=-1, the_max=-1, message=None):
         assert the_min != -1 or the_max != -1, \
             'Need a min or a max.'
         assert the_max == -1 or the_min <= the_max, \
@@ -40,14 +40,13 @@ class StringLength(object):
             raise ValidationError("%s must be a string" % field)
         # validate
         l = len(the_string)
-        if (self.the_min and self.the_min > l) \
-                or (self.the_max and self.the_max < l):
+        if (self.the_min > 0 and self.the_min > l) or (self.the_max > 0 and self.the_max < l):
             message = self.message
             if message is None:
-                if self.the_max is None:
+                if self.the_max < 0:
                     message = "%s must be at least %s characters" \
                               % (field, self.the_min)
-                elif self.the_min is None:
+                elif self.the_min < 0:
                     message = "%s must be less than %s characters" \
                               % (field, self.the_max)
             raise ValidationError(message)
@@ -88,12 +87,9 @@ class JSON(object):
         self.message = message
 
     def __call__(self, fields, the_json):
-        try:
-            for field in fields:
-                if field not in the_json:
-                    message = self.message
-                    if message is None:
-                        message = "required field %s not in json" % field
-                    raise ValidationError(message)
-        except (KeyError, TypeError) as e:
-            raise ValidationError("invalid json string %s" % e)
+        for field in fields:
+            if field not in the_json:
+                message = self.message
+                if message is None:
+                    message = "required field %s not in json" % field
+                raise ValidationError(message)

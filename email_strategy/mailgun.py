@@ -1,13 +1,13 @@
 import os
 import requests
-from email_strategy.email import Email
+from email_strategy.email import Email, Singleton
 from util.html_tools import strip_tags
 
 
 class MailGun(Email):
 
-    def __init__(self):
-        Email.__init__(self)
+    def __init__(self, *args, **kwargs):
+        Email.__init__(self, *args)
         self.server = os.getenv('MAILGUN_SERVER')
         self.api_key = os.getenv('MAILGUN_API_KEY')
 

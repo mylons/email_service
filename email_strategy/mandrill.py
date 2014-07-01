@@ -1,7 +1,7 @@
 import requests
 import json
 import os
-from email_strategy.email import Email
+from email_strategy.email import Email, Singleton
 from util.html_tools import strip_tags
 
 

@@ -1,4 +1,4 @@
-import abc
+from abc import ABCMeta, abstractmethod
 
 
 class Singleton(type):
@@ -15,19 +15,21 @@ class Singleton(type):
             return self.__instance
 
 
-
 class Email(metaclass=Singleton):
     """
     base class for emails
     it is a singleton by design.
     """
     def __init__(self):
+        super().__init__()
         self._timeout = False
 
-    @abc.abstractmethod
-    #json_keys = ['to', 'to_name', 'from', 'from_name', 'subject', 'body']
+    def __call__(self, *args, **kwargs):
+        raise TypeError("Can't instantiate directly")
+
+    @abstractmethod
     def send_email(self, to_name, to_field, from_name, from_field, subject_field, body_text):
-        raise NotImplementedError
+        pass
 
     @property
     def timeout(self):
@@ -39,6 +41,6 @@ class Email(metaclass=Singleton):
             raise TypeError('Expected boolean')
         self._timeout = value
 
-    @abc.abstractmethod
+    @abstractmethod
     def evaluate_timeout(self, response):
-        raise NotImplementedError
+        pass

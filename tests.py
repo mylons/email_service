@@ -5,6 +5,7 @@ import json
 # project packages
 from util.validator import (StringLength, Email as EmailValidator, JSON, ValidationError)
 from email_strategy.mailgun import MailGun
+from email_strategy.mandrill import  Mandrill
 import service
 
 
@@ -124,8 +125,10 @@ class EmailTests(unittest.TestCase):
     def setUp(self):
         self.mg_a = MailGun()
         self.mg_b = MailGun()
+        self.md_a = Mandrill()
+        self.md_b = Mandrill()
 
-    def test_same_object(self):
+    def test_singleton_same_object(self):
         """
         From the python manual
         Return the ``identity'' of an object. This is an integer (or long integer)
@@ -135,10 +138,13 @@ class EmailTests(unittest.TestCase):
         :return:
         """
         self.assertEqual(id(self.mg_a), id(self.mg_b))
+        self.assertEqual(id(self.md_a), id(self.md_b))
 
-    def test_member_variable_change(self):
+    def test_singleton_member_variable_change(self):
         self.mg_a.timeout = True
+        self.md_a.timeout = True
         self.assertEqual(self.mg_a.timeout, self.mg_b.timeout)
+        self.assertEqual(self.md_a.timeout, self.md_b.timeout)
 
 if __name__ == '__main__':
     unittest.main()

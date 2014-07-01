@@ -3,7 +3,8 @@ import unittest
 import json
 
 # project packages
-from util.validator import (StringLength, Email, JSON, ValidationError)
+from util.validator import (StringLength, Email as EmailValidator, JSON, ValidationError)
+from email_strategy.mailgun import MailGun
 import service
 
 
@@ -50,7 +51,7 @@ class StringLengthTests(unittest.TestCase):
 class EmailValidationTests(unittest.TestCase):
 
     def setUp(self):
-        self.e = Email()
+        self.e = EmailValidator()
 
     def test_valid_email(self):
         self.assertEqual(self.e('testing@uber.com'), None)
@@ -117,6 +118,27 @@ class HTMLStripTest(unittest.TestCase):
         from util.html_tools import strip_tags
         self.assertEqual(strip_tags(self.html), 'test')
 
+
+class EmailTests(unittest.TestCase):
+
+    def setUp(self):
+        self.mg_a = MailGun()
+        self.mg_b = MailGun()
+
+    def test_same_object(self):
+        """
+        From the python manual
+        Return the ``identity'' of an object. This is an integer (or long integer)
+        which is guaranteed to be unique and constant for this object during its
+        lifetime. Two objects with non-overlapping lifetimes may have the same id()
+        value. (Implementation note: this is the address of the object.)
+        :return:
+        """
+        self.assertEqual(id(self.mg_a), id(self.mg_b))
+
+    def test_member_variable_change(self):
+        self.mg_a.timeout = True
+        self.assertEqual(self.mg_a.timeout, self.mg_b.timeout)
 
 if __name__ == '__main__':
     unittest.main()

@@ -14,13 +14,14 @@ from util.validator import ValidationError
 # get a flask instance
 app = Flask(__name__)
 # pre cache some objects/lists
-json_keys = ['to', 'to_name', 'from', 'from_name', 'subject', 'body']
-json_validator = validator.JSON()
-str_validator = validator.StringLength(the_min=2)
-email_validator = validator.Email()
+# USING CAPS FOR GLOBALS
+JSON_KEYS = ['to', 'to_name', 'from', 'from_name', 'subject', 'body']
+JSON_VALIDATOR = validator.JSON()
+STR_VALIDATOR = validator.StringLength(the_min=2)
+EMAIL_VALIDATOR = validator.Email()
 
 # email factory
-email_factory = EmailFactory()
+EMAIL_FACTORY = EmailFactory()
 
 
 @app.route('/email', methods=['POST'])
@@ -51,13 +52,13 @@ def valid(the_json):
     # these call functions throw exceptions
     try:
         # validate required json keys are there
-        json_validator(json_keys, the_json)
+        JSON_VALIDATOR(JSON_KEYS, the_json)
         # validate those fields have strings with some content
-        for k in json_keys:
-            str_validator(k, the_json[k])
+        for k in JSON_KEYS:
+            STR_VALIDATOR(k, the_json[k])
         # validate email format
-        email_validator(the_json['to'])
-        email_validator(the_json['from'])
+        EMAIL_VALIDATOR(the_json['to'])
+        EMAIL_VALIDATOR(the_json['from'])
 
     except ValidationError:
         return False
@@ -67,7 +68,7 @@ def valid(the_json):
 
 def send_email(the_json):
     # send the email out
-    e = email_factory.get_emailer()
+    e = EMAIL_FACTORY.get_emailer()
     r = e.send_email(the_json['to_name'], the_json['to'], the_json['from_name'],
                      the_json['from'], the_json['subject'], the_json['body'])
     # this allows the email object to update itself without the service

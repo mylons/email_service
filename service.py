@@ -40,11 +40,15 @@ def process_json():
     only accepts POST requests
     only operates on JSON data
     """
-    if valid(request.json):
-        req = send_email(request.json)
-        return req.url, 200
-    else:
-        return "<p>return fail</p>", 400
+    try:
+        if valid(request.json):
+            req = send_email(request.json)
+            return req.url, 200
+        else:
+            return "<p>return fail</p>", 400
+    except ValidationError:
+        return "<p>failed {}</p>".format(e), 400
+
 
 
 def valid(the_json):
@@ -60,8 +64,8 @@ def valid(the_json):
         EMAIL_VALIDATOR(the_json['to'])
         EMAIL_VALIDATOR(the_json['from'])
 
-    except ValidationError:
-        return False
+    except ValidationError as e:
+        raise e
 
     return True
 

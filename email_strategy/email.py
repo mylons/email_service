@@ -28,7 +28,13 @@ class Email(metaclass=Singleton):
         raise TypeError("Can't instantiate directly")
 
     @abstractmethod
-    def send_email(self, to_name, to_field, from_name, from_field, subject_field, body_text):
+    def send_email(self,
+                   to_name,
+                   to_field,
+                   from_name,
+                   from_field,
+                   subject_field,
+                   body_text):
         """
         Sends the email
         :param to_name: the non-email recipient name

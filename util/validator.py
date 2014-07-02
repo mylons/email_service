@@ -39,7 +39,8 @@ class StringLength(object):
             raise ValidationError("%s must be a string" % field)
         # validate
         l = len(the_string)
-        if (self.the_min > 0 and self.the_min > l) or (self.the_max > 0 and self.the_max < l):
+        if (self.the_min > 0 and self.the_min > l) or \
+                (self.the_max > 0 and self.the_max < l):
             message = self.message
             if message is None:
                 if self.the_max < 0:
@@ -91,7 +92,8 @@ class JSON(object):
 
     def __call__(self, fields, the_json):
         """
-        :param fields: collection of the keys in the json that are required to be there
+        :param fields: collection of the keys in
+        the json that are required to be there
         :param the_json: parsed json to validate
         :return: None
         """

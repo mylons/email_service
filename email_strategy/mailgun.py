@@ -13,7 +13,13 @@ class MailGun(Email):
         self.server = os.getenv('MAILGUN_SERVER')
         self.api_key = os.getenv('MAILGUN_API_KEY')
 
-    def send_email(self, to_name, to_field, from_name, from_field, subject_field, body_text):
+    def send_email(self,
+                   to_name,
+                   to_field,
+                   from_name,
+                   from_field,
+                   subject_field,
+                   body_text):
         return requests.post(
             self.server,
             auth=("api", self.api_key),

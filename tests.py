@@ -3,13 +3,17 @@ import unittest
 import json
 
 # project packages
-from util.validator import (StringLength, Email as EmailValidator, JSON, ValidationError)
+from util.validator import (StringLength,
+                            Email as EmailValidator,
+                            JSON,
+                            ValidationError)
 from email_strategy.mailgun import MailGun
-from email_strategy.mandrill import  Mandrill
+from email_strategy.mandrill import Mandrill
 import service
 
 
 UBER_JSON_STR = '{"to": "fake@example.com", "to_name": "Ms. Fake", "from": "noreply@uber.com", "from_name": "Uber", "subject": "A Message from Uber", "body": "<h1>Your Bill</h1><p>$10</p>"}'
+
 
 class StringLengthTests(unittest.TestCase):
 
@@ -42,7 +46,8 @@ class StringLengthTests(unittest.TestCase):
             self.mn('test', '1')
         except ValidationError as e:
             self.assertEqual(e.__str__(),
-                             "{} must be at least {} characters".format('test', self.mn.the_min))
+                             "{} must be at least {} characters"
+                             .format('test', self.mn.the_min))
 
     def test_message_at_most(self):
         try:

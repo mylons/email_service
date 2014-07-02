@@ -5,7 +5,9 @@ from util.html_tools import strip_tags
 
 
 class MailGun(Email):
-
+    """
+    mailgun implementation
+    """
     def __init__(self, *args, **kwargs):
         Email.__init__(self, *args)
         self.server = os.getenv('MAILGUN_SERVER')

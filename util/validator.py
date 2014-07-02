@@ -14,15 +14,9 @@ class ValidationError(ValueError):
 class StringLength(object):
     """
     validates the length of a string
-
-    :param min:
-        The minimum length of the string.
-        If None, will not enforce
-    :param max:
-        The max length of the string.
-        If None, will not enforce
-    :param message:
-        Error message if validation error
+    :param min: The minimum length of the string. If None, will not enforce
+    :param max: The max length of the string. If None, will not enforce
+    :param message: Error message if validation error
     """
 
     def __init__(self, the_min=-1, the_max=-1, message=None):
@@ -35,7 +29,12 @@ class StringLength(object):
         self.message = message
 
     def __call__(self, field, the_string):
-        # check type
+        """
+        raises exception if string isn't valid
+        :param field: name of the field as a string
+        :param the_string: string to validate
+        :return: None
+        """
         if type(the_string) is not str:
             raise ValidationError("%s must be a string" % field)
         # validate
@@ -58,14 +57,18 @@ class Email(object):
     Validates the email address with a primitive regex.
     Does not guarantee real email address.
 
-    :param message:
-        Error message if validation error
+    :param message: Error message if validation error
     """
     def __init__(self, message=None):
         self.regex = re.compile(r'^.+@[^.].*\.[a-z]{2,10}$', re.IGNORECASE)
         self.message = message
 
     def __call__(self, email):
+        """
+        raises ValidationError if email is out of range
+        :param email: email address as a string
+        :return: None
+        """
         message = self.message
         if message is None:
             message = "Invalid email address"
@@ -87,6 +90,11 @@ class JSON(object):
         self.message = message
 
     def __call__(self, fields, the_json):
+        """
+        :param fields: collection of the keys in the json that are required to be there
+        :param the_json: parsed json to validate
+        :return: None
+        """
         for field in fields:
             if field not in the_json:
                 message = self.message

@@ -46,7 +46,6 @@ def process_json():
      from_name: name to accompany from/reply emails
      subject: subject line of the email
      body: the html of the body of the email
-
     all fields required
 
     only accepts POST requests
@@ -67,6 +66,11 @@ def process_json():
 
 
 def valid(the_json):
+    """
+    validates json before attempting to send an email
+    :param the_json: json from the request.json
+    :return: true or raises ValidationError
+    """
     # validate json -- return true/false
     # these call functions throw exceptions
     try:
@@ -86,10 +90,19 @@ def valid(the_json):
 
 
 def send_email(the_json):
+    """
+    sends the email using a client implementation of email_strategy.Email
+    :param the_json: parsed and validated json
+    :return: response object
+    """
     # send the email out
     e = EMAIL_FACTORY.get_emailer()
-    r = e.send_email(the_json['to_name'], the_json['to'], the_json['from_name'],
-                     the_json['from'], the_json['subject'], the_json['body'])
+    r = e.send_email(the_json['to_name'],
+                     the_json['to'],
+                     the_json['from_name'],
+                     the_json['from'],
+                     the_json['subject'],
+                     the_json['body'])
     # this allows the email object to update itself without the service
     # having to worry about the codes from different providers
     e.evaluate_timeout(r)
@@ -97,11 +110,23 @@ def send_email(the_json):
 
 
 def insert_in_db(the_json, success):
+    """
+    insert an email into the DB with status via the json
+    :param the_json: parsed, and validated json
+    :param success: whether the email was sent successfully or not
+    :return: None
+    """
     DB.session.add(email_record_from_json(the_json, success))
     DB.session.commit()
 
 
 def email_record_from_json(the_json, success):
+    """
+    helper function to build emailrecords from json
+    :param the_json: the parsed and validated json
+    :param success: true if the email was sent successfully
+    :return: EmailRecord
+    """
     return EmailRecord(to_email=the_json['to'],
                        to_name=the_json['to_name'],
                        from_email=the_json['from'],
@@ -112,6 +137,9 @@ def email_record_from_json(the_json, success):
 
 
 class EmailRecord(DB.Model):
+    """
+    model class for the database
+    """
     __tablename__ = 'email'
     email_id = DB.Column(DB.Integer, primary_key=True, autoincrement=True)
     to_email = DB.Column(DB.String(256))
@@ -123,7 +151,9 @@ class EmailRecord(DB.Model):
     sent = DB.Column(DB.Boolean())
 
     def __repr__(self):
-        return '<Email {} {} {}>'.format(self.to_email, self.from_email, self.subject)
+        return '<Email {} {} {}>'.format(self.to_email,
+                                         self.from_email,
+                                         self.subject)
 
 if __name__ == '__main__':
     app.run(debug=True)

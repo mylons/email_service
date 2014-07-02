@@ -6,6 +6,9 @@ from util.html_tools import strip_tags
 
 
 class Mandrill(Email):
+    """
+    Mandrill implementation
+    """
 
     def __init__(self):
         Email.__init__(self)

@@ -20,6 +20,11 @@ class HTMLStripper(HTMLParser):
 
 
 def strip_tags(html):
+    """
+    removes html tags from a string
+    :param html: string that may contain some html
+    :return: string that doesn't contain html
+    """
     h = HTMLStripper()
     h.feed(html)
     return h.get_data()

@@ -6,13 +6,18 @@ from email_strategy.email import Email
 
 class EmailFactory(object):
     """
-    returns an object capable of sending emails
+    creates objects capable of sending emails
     """
     def __init__(self):
         self.mg = MailGun()
         self.md = Mandrill()
 
     def get_emailer(self):
+        """
+        Returns a client that can send emails. Currently only
+        MailGun and Mandrill are supported
+        :return: Email object which implements a service that can send email
+        """
         if not self.mg.timeout:
             return self.mg
         elif not self.md.timeout:

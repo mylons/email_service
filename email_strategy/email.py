@@ -29,6 +29,16 @@ class Email(metaclass=Singleton):
 
     @abstractmethod
     def send_email(self, to_name, to_field, from_name, from_field, subject_field, body_text):
+        """
+        Sends the email
+        :param to_name: the non-email recipient name
+        :param to_field: recipient email
+        :param from_name: the non-email sender name
+        :param from_field: sender email
+        :param subject_field: subject of the email
+        :param body_text: body of email (may include html)
+        :return:
+        """
         pass
 
     @property

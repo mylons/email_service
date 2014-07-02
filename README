@@ -81,3 +81,8 @@ would eliminate the risk of downtime from a hardware angle.
 From a software perspective, you could tweak email_factory to occasionally re-check a failed
 email client, and shoot off a test email, and bring the client back into rotation if it's
 successful -- trickier to implement.
+
+Regarding the database: this is making use of sqlite3 just to show that I can use a
+database. If it were in production, it'd be using something like Postgresql and possibly
+on a remote box. Those are simply additional parameters or config options to
+SQLAlchemy.

@@ -11,8 +11,20 @@ from util.validator import ValidationError
 # initial setup #
 #################
 
+
+# setup the db
+import os
+from flask.ext.sqlalchemy import SQLAlchemy
+
+basedir = os.path.abspath(os.path.dirname(__file__))
 # get a flask instance
 app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] =\
+    'sqlite:///' + os.path.join(basedir, 'data.sqlite')
+app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = True
+
+DB = SQLAlchemy(app)
+
 # pre cache some objects/lists
 # USING CAPS FOR GLOBALS
 JSON_KEYS = ['to', 'to_name', 'from', 'from_name', 'subject', 'body']
@@ -43,12 +55,15 @@ def process_json():
     try:
         if valid(request.json):
             req = send_email(request.json)
+            # save to db ass successful
+            insert_in_db(request.json, True)
             return req.url, 200
         else:
+            insert_in_db(request.json, False)
             return "<p>return fail</p>", 400
-    except ValidationError:
+    except ValidationError as e:
+        insert_in_db(request.json, False)
         return "<p>failed {}</p>".format(e), 400
-
 
 
 def valid(the_json):
@@ -79,6 +94,36 @@ def send_email(the_json):
     # having to worry about the codes from different providers
     e.evaluate_timeout(r)
     return r
+
+
+def insert_in_db(the_json, success):
+    DB.session.add(email_record_from_json(the_json, success))
+    DB.session.commit()
+
+
+def email_record_from_json(the_json, success):
+    return EmailRecord(to_email=the_json['to'],
+                       to_name=the_json['to_name'],
+                       from_email=the_json['from'],
+                       from_name=the_json['from_name'],
+                       subject=the_json['subject'],
+                       body=the_json['body'],
+                       sent=success)
+
+
+class EmailRecord(DB.Model):
+    __tablename__ = 'email'
+    email_id = DB.Column(DB.Integer, primary_key=True, autoincrement=True)
+    to_email = DB.Column(DB.String(256))
+    to_name = DB.Column(DB.String(256))
+    from_email = DB.Column(DB.String(256))
+    from_name = DB.Column(DB.String(256))
+    subject = DB.Column(DB.String())
+    body = DB.Column(DB.String())
+    sent = DB.Column(DB.Boolean())
+
+    def __repr__(self):
+        return '<Email {} {} {}>'.format(self.to_email, self.from_email, self.subject)
 
 if __name__ == '__main__':
     app.run(debug=True)

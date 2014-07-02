@@ -13,6 +13,10 @@ pip install -r requirements.txt
 
 # run tests
 py.test tests.py
+
+# init the database
+python init_db.py
+
 # run email service
 python service.py
 

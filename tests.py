@@ -106,7 +106,8 @@ class ServiceTests(unittest.TestCase):
         self.assertEqual(resp.status_code, 400)
 
     def test_invalid_json(self):
-        self.assertEqual(service.valid(json.loads(self.uber_json_str_missing_keys)), False)
+        with self.assertRaises(ValidationError):
+            service.valid(json.loads(self.uber_json_str_missing_keys))
 
     def test_valid_json(self):
         self.assertEqual(service.valid(json.loads(self.uber_json_str)), True)

@@ -43,7 +43,7 @@ which are pretty ancient, and counter-intuitive to most modern web programmers.
 
 Used the built in unittest package for testing, but have been relying on
 py.test to actually run and oversee the tests. The decision to use
-py.test is due to it's ability to do generic testing without subclassing
+py.test is due to its ability to do generic testing without subclassing
 the unittest.TestCase class. Automatic test discovery is also nice, and there
 are other features that, if this project were to have a long future, could be
 taken advantage of for larger test suites. This should make it more sustainable
@@ -54,12 +54,12 @@ test coverage.
 
 # additional features
 The util.validator package provides more robust validation than just checking
-if the required fields are there. It's capable of performing string length
+if the required fields are there. It is capable of performing string length
 validation, email format validation, and validating the json.
 
 The email implementation classes are singletons to limit object creation in a
 theoretically hig load system. the Email class is also meant to be abstract. I was
-attempting to use the ABCMeta as it's metaclass, but was conflicting with my singleton
+attempting to use the ABCMeta as its' metaclass, but was conflicting with my singleton
 inheritance in the sub classes of Email. So, Email's in a createable state now, but
 has abstract methods and as such is useless.
 
@@ -76,7 +76,7 @@ and having a few instances of this web app running on servers behind the balance
 would eliminate the risk of downtime from a hardware angle.
 
 From a software perspective, you could tweak email_factory to occasionally re-check a failed
-email client, and shoot off a test email, and bring the client back into rotation if it's
+email client, and shoot off a test email, and bring the client back into rotation if it is
 successful -- trickier to implement.
 
 Regarding the database: this is making use of sqlite3 just to show that I can use a

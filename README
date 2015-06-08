@@ -25,14 +25,11 @@ you should now be able to curl the address output by the program:
 
 # General notes on the design and application itself
 
-It requires python 3.3! I did this for a few reasons:
-  1. Python 3 adoption is around 2% of the total github python projects.
-     People need to start using python 3.
-
-  2. There are neat features in Python 3 that I wanted to
+It requires python 3.3! I did this for a two reasons:
+  1. There are neat features in Python 3 that I wanted to
      explore like the new metaclass features, etc
 
-  3. I haven't used Python 3 for a project yet.
+  2. I haven't used Python 3 for a project yet.
 
   With that said, I wouldn't insist on using python3.x at Uber. I
   thought it would be a neat feature to this project.
